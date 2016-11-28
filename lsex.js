@@ -56,9 +56,7 @@ function readdirRecursiveSync(root, filter) {
     }
     ['any', 'directory', 'file'].forEach(prop => {
         if (typeof filter[prop] !== 'function') {
-            filter[prop] = () => {
-                return true;
-            }
+            filter[prop] = () => true;
         }
     });
 
@@ -81,16 +79,13 @@ function readdirRecursiveSync(root, filter) {
                 continue;
             }
             const children = fs.readdirSync(item);
-            Array.prototype.push.apply(paths, children.map(child => {
-                return path.join(item, child);
-            }));
+            paths.push(...children.map(child => path.join(item, child)))
         }
     }
     return files;
 }
 
-function callMethod(object, property) {
-    let args = Array.prototype.slice.call(arguments, 2);
+function callMethod(object, property, ...args) {
     if (object && object[property]) {
         let method = object[property];
         if (typeof method === 'function') {
