@@ -68,18 +68,21 @@ function readdirRecursiveSync(root, filter) {
         if (!filter.any(item)) {
             continue;
         }
-        const stat = fs.statSync(item);
-        if (stat.isFile()) {
-            if (!filter.file(item)) {
-                continue;
+        try {
+            const stat = fs.statSync(item);
+            if (stat.isFile()) {
+                if (!filter.file(item)) {
+                    continue;
+                }
+                files.push(item);
+            } else if (stat.isDirectory()) {
+                if (!filter.directory(item)) {
+                    continue;
+                }
+                const children = fs.readdirSync(item);
+                paths.push(...children.map(child => path.join(item, child)))
             }
-            files.push(item);
-        } else if (stat.isDirectory()) {
-            if (!filter.directory(item)) {
-                continue;
-            }
-            const children = fs.readdirSync(item);
-            paths.push(...children.map(child => path.join(item, child)))
+        } catch (e) {
         }
     }
     return files;
