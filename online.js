@@ -10,7 +10,8 @@ require('readline')
         input: process.stdin
     })
     .on('line', line => {
-        let ret = transform(line, env);
+        let columns = line.match(/('(\\'|[^'])*'|"(\\"|[^"])*"|\/(\\\/|[^\/])*\/|(\\ |[^ ])+|[\w-]+)/g) || [];
+        let ret = transform(line, columns, env);
         if (ret != null) {
             console.log(ret);
         }
