@@ -11,8 +11,8 @@ require('readline')
     })
     .on('line', line => {
         let columns = line.match(/('(\\'|[^'])*'|"(\\"|[^"])*"|\/(\\\/|[^\/])*\/|(\\ |[^ ])+|[\w-]+)/g) || [];
-        let ret = transform(line, columns, env);
-        if (ret != null) {
-            console.log(ret);
+        let value = transform(line, columns, env);
+        if (value != null) {
+            console.log(value);
         }
     });
