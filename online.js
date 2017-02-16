@@ -3,7 +3,7 @@
 
 let [,, src] = process.argv;
 let transform = eval(src) || (line => line);
-let env = Object.create(null);
+let env = new Set();
 
 require('readline')
     .createInterface({
