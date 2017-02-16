@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-let [,, src] = process.argv;
-let transform = eval(src) || (line => line);
+let [,, onLineSrc, onCloseSrc ] = process.argv;
+let onLine = eval(onLineSrc) || (line => line);
+let onClose = eval(onCloseSrc) || (() => undefined);
 let env = new Set();
 
 require('readline')
@@ -11,8 +12,11 @@ require('readline')
     })
     .on('line', line => {
         let columns = line.match(/('(\\'|[^'])*'|"(\\"|[^"])*"|\/(\\\/|[^\/])*\/|(\\ |[^ ])+|[\w-]+)/g) || [];
-        let value = transform(line, columns, env);
+        let value = onLine(line, columns, env);
         if (value != null) {
             console.log(value);
         }
+    })
+    .on('close', () => {
+        onClose(env);
     });
