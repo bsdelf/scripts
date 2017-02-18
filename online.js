@@ -18,5 +18,8 @@ require('readline')
         }
     })
     .on('close', () => {
-        onClose(env);
+        let value = onClose(env);
+        if (value != null) {
+            console.log(value);
+        }
     });
