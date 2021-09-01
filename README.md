@@ -5,18 +5,18 @@ Scripts, might be helpful.
 
 Strip leading "./" for the output of `find` command:
 
-```
-find . | online.js "line => line.replace(/^.\//, '')"
+```sh
+find . | online.js "({line}) => line.replace(/^.\//, '')"
 ```
 
 Get the third column for the output of `wc` command:
 
-```
-wc README.md | online.js "(line, cols) => cols[2]"
+```sh
+wc README.md | online.js "({columns}) => columns[2]"
 ```
 
 Count word frequency:
 
-```
-echo 'a\nb b\nc c c\nd d d d' | online.js "(_, cols, env) => cols.forEach(word => env[word] = (env[word] >>> 0) + 1)" "env => env"
+```sh
+echo 'a\nb b\nc c c\nd d d d' | online.js "({columns, context}) => columns.forEach(word => context[word] = (context[word] >>> 0) + 1)" "context => context"
 ```
